@@ -1,0 +1,11 @@
+index=main
+| eval src_ip=coalesce('ip.src','ipv6.src'),
+       dest_ip=coalesce('ip.dst','ipv6.dst'),
+       dns_query=lower('dns.qry.name')
+| where isnotnull(dns_query) AND len(dns_query)>0
+| stats count AS query_count
+        dc(src_ip) AS unique_clients
+        values(src_ip) AS clients
+        BY dns_query
+| sort - query_count
+| head 50

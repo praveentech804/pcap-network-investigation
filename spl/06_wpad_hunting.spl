@@ -1,0 +1,8 @@
+index=main
+| eval src_ip=coalesce('ip.src','ipv6.src'),
+       dns_query=lower('dns.qry.name')
+| where isnotnull(dns_query) AND match(dns_query,"(^|\\.)wpad\\.")
+| stats count AS query_count
+        values(src_ip) AS clients
+        BY dns_query
+| sort - query_count

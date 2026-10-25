@@ -1,0 +1,7 @@
+index=main
+| eval src_ip=coalesce('ip.src','ipv6.src'),
+       dest_ip=coalesce('ip.dst','ipv6.dst'),
+       frame_bytes=tonumber('frame.len')
+| stats count AS packets sum(frame_bytes) AS bytes BY src_ip
+| sort  - packets
+| head 20

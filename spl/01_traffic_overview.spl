@@ -1,0 +1,10 @@
+index=main
+| eval src_ip=coalesce('ip.src','ipv6.src'),
+       dest_ip=coalesce('ip.dst','ipv6.dst'),
+       protocol=coalesce('ip.proto','frame.protocols'),
+       frame_bytes=tonumber('frame.len')
+| stats count AS events
+        dc(src_ip) AS unique_source_ips
+        dc(dest_ip) AS unique_destination_ips
+        sum(frame_bytes) AS total_frame_bytes
+| eval total_frame_bytes=round(total_frame_bytes,0)

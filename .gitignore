@@ -1,7 +1,12 @@
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-# Keep potentially sensitive packet exports out of public GitHub by default.
+# Keep packet captures and raw traffic exports private by default.
 data/raw/*.csv
-!data/raw/README.md
+data/raw/*.pcap
+data/raw/*.pcapng
+*.pcap
+*.pcapng
+
+# Local artifacts
+.DS_Store
+*.log
+*.tmp
+.env

@@ -1,0 +1,3 @@
+index=main
+| head 20
+| fieldsummary

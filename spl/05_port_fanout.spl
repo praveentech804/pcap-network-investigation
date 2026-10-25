@@ -1,0 +1,12 @@
+index=main
+| eval src_ip=coalesce('ip.src','ipv6.src'),
+       dest_ip=coalesce('ip.dst','ipv6.dst'),
+       dst_port=coalesce('tcp.dstport','udp.dstport')
+| where isnotnull(src_ip) AND isnotnull(dst_port)
+| stats dc(dst_port) AS unique_destination_ports
+        dc(dest_ip) AS unique_destinations
+        count AS packet_count
+        values(dst_port) AS observed_ports
+        BY src_ip
+| where unique_destination_ports >= 20
+| sort - unique_destination_ports

@@ -1,0 +1,7 @@
+index=main
+| eval http_host=lower('http.host')
+| where isnotnull(http_host)
+| rex field=http_host "^(?<host_ipv4>(?:[0-9]{1,3}\\.){3}[0-9]{1,3})(?::[0-9]+)?$"
+| where isnotnull(host_ipv4)
+| stats count AS events BY host_ipv4
+| sort - events
